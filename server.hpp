@@ -12,12 +12,13 @@ using boost::asio::ip::tcp;
 
 class ServerInterface {
  protected:
-  boost::asio::ip::tcp::acceptor acceptor_;
-  boost::asio::io_context context_;
-  std::thread context_thread_;
-
   std::deque<std::shared_ptr<Connection>> connections_;
   ThreadSafeQueue<ConnectionMessage> input_messages_;
+
+  boost::asio::io_context context_;
+  std::thread context_thread_;
+  boost::asio::ip::tcp::acceptor acceptor_;
+
 
   uint32_t user_cnt = 0;
  public:
@@ -54,7 +55,7 @@ class ServerInterface {
  
  void AcceptConnection() {
    acceptor_.async_accept(
-     [this](boost::system::error_code& ec, tcp::socket socket){
+     [this](const boost::system::error_code& ec, tcp::socket socket){
        if (!ec) {
          std::shared_ptr<Connection> connection = std::make_shared<Connection>(context_, std::move(socket), input_messages_, Connection::Authority::Server);
 
@@ -112,7 +113,7 @@ class ServerInterface {
     size_t read_cnt = 0;
 
     while (read_cnt < cnt && !input_messages_.empty()) {
-      ConnectionMessage msg =input_messages_.pop_front();
+      ConnectionMessage msg = input_messages_.pop_front();
 
       HandleMessage(msg.remote, msg.msg);
 

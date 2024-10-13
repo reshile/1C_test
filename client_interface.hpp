@@ -13,17 +13,21 @@ using boost::asio::ip::tcp;
 // connections and to think only
 // about message send and recieve
 class ClientInterface {
- private:
-  ThreadSafeQueue<ConnectionMessage> input_messages_;
-
  protected:
   boost::asio::io_context context_;
   std::thread context_thread_;
   std::unique_ptr<Connection> connection_;
 
+ private:
+  ThreadSafeQueue<ConnectionMessage> input_messages_;
+
  public:
   ClientInterface() {}
 
+  ~ClientInterface() {
+    Disconnect();
+  }    
+  
   ThreadSafeQueue<ConnectionMessage>& GetInputMessages() {
     return input_messages_;
   }
