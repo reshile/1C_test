@@ -90,6 +90,5 @@ class ClientInterface {
       connection_->SendMessage(msg);
     }
   }
-
 };
 

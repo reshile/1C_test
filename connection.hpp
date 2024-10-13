@@ -25,6 +25,10 @@ class Connection : public std::enable_shared_from_this<Connection> {
 
   ~Connection() {}
 
+  uint32_t getId() {
+    return id;
+  }
+
   void SendMessage(const Message& msg) {
     boost::asio::post(context_, 
       [this, msg](){

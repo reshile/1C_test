@@ -4,6 +4,7 @@
 
 enum MessageType : uint32_t {
   Broadcast,
+  FinishExperiment,
   Greater,
   Equals,
   Less,

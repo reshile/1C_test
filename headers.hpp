@@ -6,6 +6,7 @@
 // used in other header files
 #include <mutex>
 #include <deque>
+#include <map>
 #include <memory>
 #include <thread>
 #include <cstdint>
